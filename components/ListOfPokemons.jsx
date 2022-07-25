@@ -8,7 +8,7 @@ const ListOfPokemons = ({ pokemons }) => {
   
   const handleChange = (element) => {
     const filter = pokemons.filter((poke) =>
-      poke.pokemon_species.name.includes(element.target.value)
+      poke.pokemon_species.name.includes(element.target.value.toLowerCase())
     );
     setSave(filter);
     setOffset(0)

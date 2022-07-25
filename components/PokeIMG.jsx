@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const PokeIMG = ({ index }) => {
+const PokeIMG = ({ index, wh = 100 }) => {
   const [pokeInfo, setPokeInfo] = useState(null);
   useEffect(() => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${index}/`)
@@ -29,7 +29,7 @@ const PokeIMG = ({ index }) => {
           )}
         </>
       ) : (
-        <div className="w-[100px] h-[100px]"></div>
+        <span className={`loader w-[${wh}px] h-[${wh}px]`}></span>
       )}
     </>
   );
