@@ -2,12 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 export async function getStaticPaths() {
-  const data = await fetch(
-    "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1154"
-  );
+  const data = await fetch("https://pokeapi.co/api/v2/pokedex/1/");
   const res = await data.json();
   return {
-    paths: res.results.map((path, index) => ({ params: { slug: `${index}` } })),
+    paths: res.pokemon_entries.map((path) => ({
+      params: { slug: `${path.entry_number}` },
+    })),
     fallback: false,
   };
 }

@@ -2,24 +2,24 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const PokeIMG = ({ info }) => {
+const PokeIMG = ({ index }) => {
   const [pokeInfo, setPokeInfo] = useState(null);
   useEffect(() => {
-    fetch(info.url)
+    fetch(`https://pokeapi.co/api/v2/pokemon/${index}/`)
       .then((response) => response.json())
       .then((res) => setPokeInfo(res));
-  }, [info]);
+  }, [index]);
 
   return (
     <>
       {pokeInfo ? (
         <>
           {pokeInfo.sprites.other["official-artwork"].front_default ? (
-            <Link href={`/poke/${pokeInfo.id}`}>
+            <Link href={`/poke/${index}`}>
               <Image
                 width={100}
                 height={100}
-                alt={info.name}
+                alt={pokeInfo.name}
                 src={pokeInfo.sprites.other["official-artwork"].front_default}
                 className="cursor-pointer"
               />

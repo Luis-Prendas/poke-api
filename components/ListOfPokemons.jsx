@@ -1,61 +1,57 @@
 import PokeIMG from "./PokeIMG";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const ListOfPokemons = ({ pokemons }) => {
+  const [save, setSave] = useState(pokemons);
+  const [toUse, setToUse] = useState(save.slice(0, 3));
   const [offset, setOffset] = useState(0);
-  const [toUse, setTpUse] = useState(pokemons.results.slice(0, 3));
-  const [save, setSave] = useState(pokemons.results);
-  const search = useRef();
-  const handleChange = () => {
-    const asd = pokemons.results.filter((poke) =>
-      poke.name.includes(search.current.value)
+  
+  const handleChange = (element) => {
+    const filter = pokemons.filter((poke) =>
+      poke.pokemon_species.name.includes(element.target.value)
     );
-    setSave(asd);
+    setSave(filter);
+    setOffset(0)
   };
 
   useEffect(() => {
-    const slice = save.slice(offset, offset + 3);
-    setTpUse(slice);
-  }, [offset, save]);
+    setToUse(save.slice(offset, offset + 3));
+  }, [offset, save, pokemons]);
 
-  const handleMore = () => {
-    setOffset((prev) => prev + 3);
-  };
-  const handleLess = () => {
-    setOffset((prev) => prev - 3);
-  };
+
   return (
     <>
       <input
         onChange={handleChange}
-        ref={search}
         type="text"
+        className="w-80 h-10 rounded px-2 text-stone-700 font-semibold"
         placeholder="Search"
-        className="px-2 w-80 h-10 rounded"
       />
-      {toUse.map((poke) => (
-        <div
-          key={poke.name}
-          className="w-[200px] h-[200px] bg-stone-800 p-4 flex flex-col justify-center items-center gap-4 rounded select-none hover:scale-105"
-        >
-          <h1 className="text-3xl">{poke.name}</h1>
-          <PokeIMG info={poke} />
-        </div>
-      ))}
-      <section className=" flex gap-4">
+      <section className="flex flex-wrap justify-center gap-4">
+        {toUse.map((poke) => (
+          <div
+            key={poke.entry_number}
+            className="w-[250px] h-[200px] bg-stone-800 p-4 flex flex-col justify-center items-center gap-4 rounded select-none hover:scale-105"
+          >
+            <h1 className="text-3xl">{poke.pokemon_species.name}</h1>
+            <PokeIMG index={poke.entry_number} />
+          </div>
+        ))}
+      </section>
+      <section className="flex gap-4 w-full justify-center">
         <button
-          onClick={handleLess}
+          className="w-20 h-10 bg-stone-800 rounded"
+          onClick={() => setOffset((prev) => prev - 3)}
           disabled={offset === 0}
-          className="bg-stone-800 px-4 py-2 rounded"
         >
-          ‹
+          -
         </button>
         <button
-          onClick={handleMore}
+          className="w-20 h-10 bg-stone-800 rounded"
+          onClick={() => setOffset((prev) => prev + 3)}
           disabled={offset + 3 >= save.length}
-          className="bg-stone-800 px-4 py-2 rounded"
         >
-          ›
+          +
         </button>
       </section>
     </>
