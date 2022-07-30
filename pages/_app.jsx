@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-stone-700 min-h-screen flex justify-start items-center flex-col gap-4 text-stone-300 p-4">
-        <Component {...pageProps} />
+          <Component {...pageProps} />
       </main>
     </>
   );
