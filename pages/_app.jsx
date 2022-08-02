@@ -1,7 +1,10 @@
 import "../styles/globals.css";
 import Head from "next/head";
+import NumContext from "../context/NumContext";
+import { useState } from "react";
 
 function MyApp({ Component, pageProps }) {
+  const [num, setNum] = useState(0);
   return (
     <>
       <Head>
@@ -10,7 +13,9 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-stone-700 min-h-screen flex justify-start items-center flex-col gap-4 text-stone-300 p-4">
+        <NumContext.Provider value={{ num, setNum }}>
           <Component {...pageProps} />
+        </NumContext.Provider>
       </main>
     </>
   );
