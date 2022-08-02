@@ -3,9 +3,20 @@
 @tailwind utilities;
 
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	scrollbar-width: none;
+}
+
+*:disabled,
+*[disabled] {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+*::-webkit-scrollbar {
+	display: none;
 }
 
 .loader {

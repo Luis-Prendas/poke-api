@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AiFillHome } from "react-icons/ai";
+import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 
 export async function getStaticPaths() {
   const data = await fetch("https://pokeapi.co/api/v2/pokedex/1/");
@@ -18,6 +20,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       poke: res,
+      slug: params.slug,
     },
   };
 }
@@ -43,14 +46,27 @@ const style = {
   water: "bg-[#6390f0]",
 };
 
-const Poke = ({ poke }) => {
+const Poke = ({ poke, slug }) => {
   return (
     <>
-      <section className="relative flex flex-col w-full bg-stone-800 rounded justify-start items-center p-4">
+      <section className="relative flex flex-col w-full bg-stone-800 rounded justify-center items-center p-4">
         <Link href="/">
           <a className="absolute top-4 left-4 p-4 bg-stone-900 rounded-full text-3xl select-none">
-            ‹
+            <AiFillHome />
           </a>
+        </Link>
+        <Link href={String(Number(slug) - 1)}>
+          <button
+            disabled={slug == 1}
+            className="absolute left-4 p-4 hover:bg-stone-900 rounded-full text-3xl select-none"
+          >
+            <MdNavigateBefore />
+          </button>
+        </Link>
+        <Link href={String(Number(slug) + 1)}>
+          <button className="absolute right-4 p-4 hover:bg-stone-900 rounded-full text-3xl select-none">
+            <MdNavigateNext />
+          </button>
         </Link>
         <h1 className="text-3xl uppercase font-bold">{poke.name}</h1>
         <Image

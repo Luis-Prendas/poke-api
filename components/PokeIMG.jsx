@@ -1,35 +1,23 @@
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import usePokeDetails from "../hooks/usePokeDetails";
 
-const PokeIMG = ({ index, wh = 100 }) => {
-  const [pokeInfo, setPokeInfo] = useState(null);
-  useEffect(() => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/${index}/`)
-      .then((response) => response.json())
-      .then((res) => setPokeInfo(res));
-  }, [index]);
-
+const PokeIMG = ({ index }) => {
+  const { pokeDetails } = usePokeDetails(index);
   return (
     <>
-      {pokeInfo ? (
-        <>
-          {pokeInfo.sprites.other["official-artwork"].front_default ? (
-            <Link href={`/poke/${index}`}>
-              <Image
-                width={100}
-                height={100}
-                alt={pokeInfo.name}
-                src={pokeInfo.sprites.other["official-artwork"].front_default}
-                className="cursor-pointer"
-              />
-            </Link>
-          ) : (
-            <div className="w-[100px] h-[100px]">NO IMAGE</div>
-          )}
-        </>
+      {pokeDetails ? (
+        <Link href={`poke/${index}`}>
+          <Image
+            width={100}
+            height={100}
+            alt={pokeDetails.name}
+            src={pokeDetails.sprites.other["official-artwork"].front_default}
+            className="cursor-pointer"
+          />
+        </Link>
       ) : (
-        <span className={`loader w-[${wh}px] h-[${wh}px]`}></span>
+        <span className="loader w-[100px] h-[100px]"></span>
       )}
     </>
   );

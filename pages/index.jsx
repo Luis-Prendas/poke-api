@@ -1,4 +1,6 @@
 import ListOfPokemons from "../components/ListOfPokemons";
+import Nav from "../components/Nav";
+import PokeContext from "../context/PokeContext";
 
 export async function getStaticProps() {
   const data = await fetch("https://pokeapi.co/api/v2/pokedex/1/");
@@ -12,8 +14,9 @@ export async function getStaticProps() {
 
 export default function Home({ pokemons }) {
   return (
-    <>
-      <ListOfPokemons pokemons={pokemons.pokemon_entries} />
-    </>
+    <PokeContext.Provider value={pokemons.pokemon_entries}>
+      <ListOfPokemons />
+      <Nav />
+    </PokeContext.Provider>
   );
 }
