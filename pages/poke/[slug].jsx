@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 import { AiFillHome } from "react-icons/ai";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
+import useNumber from "../../hooks/useNumber";
 
 export async function getStaticPaths() {
   const data = await fetch("https://pokeapi.co/api/v2/pokedex/1/");
@@ -47,6 +49,15 @@ const style = {
 };
 
 const Poke = ({ poke, slug }) => {
+  const { contextNum } = useNumber();
+
+  useEffect(() => {
+    if ((Number(slug) - 1) % 3 == 0 && Number(slug) > contextNum.num + 3) {
+      contextNum.setNum((prev) => prev + 3);
+      console.log(contextNum.num);
+    }
+  }, [slug]);
+
   return (
     <>
       <section className="relative flex flex-col w-full bg-stone-800 rounded justify-center items-center p-4">
