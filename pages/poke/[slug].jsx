@@ -58,13 +58,13 @@ const Poke = ({ poke, slug }) => {
         <Link href={String(Number(slug) - 1)}>
           <button
             disabled={slug == 1}
-            className="absolute left-4 p-4 hover:bg-stone-900 rounded-full text-3xl select-none"
+            className=" z-40 absolute left-4 p-4 hover:bg-stone-900 rounded-full text-3xl select-none"
           >
             <MdNavigateBefore />
           </button>
         </Link>
         <Link href={String(Number(slug) + 1)}>
-          <button className="absolute right-4 p-4 hover:bg-stone-900 rounded-full text-3xl select-none">
+          <button className=" z-40 absolute right-4 p-4 hover:bg-stone-900 rounded-full text-3xl select-none">
             <MdNavigateNext />
           </button>
         </Link>
