@@ -1,32 +1,30 @@
 import { useState } from "react";
 import PokemonCard from "../components/PokemonCard";
+import { usePokemonNext, usePokemonPrev } from "../hooks/usePokemon";
 
-const Home = ({ pokemons }) => {
-  const [pokemonsToUse, setPokemonsToUse] = useState(pokemons);
+const Home = ({ pokemonsInit }) => {
+  const [pokemonsToUse, setPokemonsToUse] = useState(pokemonsInit);
   const [offset, setOffset] = useState(0);
 
-  const fetcherNext = async () => {
-    const response = await fetch(pokemonsToUse.next);
-    const res = await response.json();
-    setPokemonsToUse(res);
-    setOffset((prev) => prev + 20);
+  const { pokemonsNext } = usePokemonNext(pokemonsToUse.next);
+  const { pokemonsPrev } = usePokemonPrev(pokemonsToUse.previous);
+
+  const fetcherNext = () => {
+    setPokemonsToUse(pokemonsNext);
+    setOffset((prev) => prev + 6);
   };
 
   const fetcherPrev = async () => {
-    const response = await fetch(pokemonsToUse.previous);
-    const res = await response.json();
-    setPokemonsToUse(res);
-    setOffset((prev) => prev - 20);
+    setPokemonsToUse(pokemonsPrev);
+    setOffset((prev) => prev - 6);
   };
-
-  // console.log(pokemons);
 
   return (
     <article className="flex flex-wrap justify-center items-center gap-8">
       {pokemonsToUse.results.map((pokemon, index) => (
         <PokemonCard
           key={index + 1 + offset}
-          pokemonInfo={pokemon}
+          name={pokemon.name}
           index={index + 1 + offset}
         />
       ))}
@@ -34,14 +32,14 @@ const Home = ({ pokemons }) => {
         <button
           disabled={!pokemonsToUse.previous}
           onClick={fetcherPrev}
-          className="px-6 py-2 bg-stone-800 rounded-2xl"
+          className="px-6 py-2 bg-[#09f] rounded-2xl"
         >
           -
         </button>
         <button
           disabled={!pokemonsToUse.next}
           onClick={fetcherNext}
-          className="px-6 py-2 bg-stone-800 rounded-2xl"
+          className="px-6 py-2 bg-[#09f] rounded-2xl"
         >
           +
         </button>
@@ -51,11 +49,11 @@ const Home = ({ pokemons }) => {
 };
 
 export async function getStaticProps() {
-  const response = await fetch("https://pokeapi.co/api/v2/pokemon");
+  const response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=6");
   const res = await response.json();
   return {
     props: {
-      pokemons: res,
+      pokemonsInit: res,
     },
   };
 }
